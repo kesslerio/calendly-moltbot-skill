@@ -8,7 +8,8 @@ Clawdbot skill for Calendly integration. List events, check availability, manage
 - **Event Management**: List, view, and cancel scheduled events
 - **Invitee Management**: View event invitees
 - **Organization**: List organization memberships
-- **Scheduling API**: Discover event types, check availability, and schedule meetings programmatically
+
+> **Note:** Scheduling API features (list-event-types, get-event-type-availability, schedule-event) are available in calendly-mcp-server v2.0.0, which is currently unreleased. This skill uses v1.0.0 from npm for portability. See [Upgrade to v2.0](#upgrade-to-v20) for instructions once published.
 
 ## Installation
 
@@ -30,8 +31,6 @@ export CALENDLY_API_KEY="your-pat-token"
 ```
 
 Get your token from: https://calendly.com/integrations/api_webhooks
-
-**Note:** Scheduling API features require a paid Calendly plan (Standard or higher).
 
 ## Usage
 
@@ -59,24 +58,6 @@ Get your token from: https://calendly.com/integrations/api_webhooks
 ./calendly cancel-event --event-uuid "<EVENT_UUID>" --reason "Rescheduling needed"
 ```
 
-### Scheduling Workflow
-
-```bash
-# 1. List your available event types
-./calendly list-event-types
-
-# 2. Check availability for a specific event type
-./calendly get-event-type-availability --event-type "<EVENT_TYPE_URI>"
-
-# 3. Schedule a meeting at an available time (requires paid plan)
-./calendly schedule-event \
-  --event-type "<EVENT_TYPE_URI>" \
-  --start-time "2026-01-25T19:00:00Z" \
-  --invitee-email "client@company.com" \
-  --invitee-name "John Smith" \
-  --invitee-timezone "America/New_York"
-```
-
 ## Available Commands
 
 ### Event Management
@@ -86,11 +67,6 @@ Get your token from: https://calendly.com/integrations/api_webhooks
 - `cancel-event` - Cancel an event
 - `list-event-invitees` - List invitees for an event
 - `list-organization-memberships` - List organization memberships
-
-### Scheduling API (requires paid plan)
-- `list-event-types` - List available event types for scheduling
-- `get-event-type-availability` - Get available time slots for an event type
-- `schedule-event` - Schedule a meeting programmatically
 
 ### OAuth
 - `get-oauth-url` - Generate OAuth authorization URL
@@ -115,9 +91,25 @@ Then use in conversations:
 - "What meetings do I have?"
 - "Cancel my 2pm meeting"
 - "Who's attending my next call?"
-- "What event types do I have available?"
-- "Check my availability for next Tuesday"
-- "Schedule a meeting with john@company.com tomorrow at 2 PM"
+
+## Upgrade to v2.0
+
+Once calendly-mcp-server v2.0.0 is published to npm (adds Scheduling API with event types, availability, and programmatic scheduling), regenerate the CLI:
+
+```bash
+# Update to v2.0+
+MCPORTER_CONFIG=./mcporter.json npx mcporter@latest generate-cli --server calendly --output calendly
+
+# Verify new commands appear
+./calendly --help | grep -E "list-event-types|get-event-type-availability|schedule-event"
+```
+
+The v2.0 Scheduling API will add:
+- `list-event-types` - List available event types for scheduling
+- `get-event-type-availability` - Get available time slots
+- `schedule-event` - Schedule meetings programmatically
+
+**Requires:** Paid Calendly plan (Standard or higher)
 
 ## Development
 
@@ -126,7 +118,7 @@ This skill wraps the [calendly-mcp-server](https://github.com/meAmitPatil/calend
 To regenerate the CLI (if the upstream MCP server updates):
 
 ```bash
-# Configure mcporter
+# Uses mcporter.json config (not tracked in git)
 cat > mcporter.json <<EOF
 {
   "mcpServers": {
@@ -142,13 +134,7 @@ cat > mcporter.json <<EOF
 EOF
 
 # Generate CLI
-MCPORTER_CONFIG=./mcporter.json mcporter generate-cli --server calendly --output calendly
-```
-
-**Note:** If using unreleased features from GitHub, point to the repository:
-```bash
-# Use latest from GitHub (for unreleased v2.0+ features)
-"args": ["github:meAmitPatil/calendly-mcp-server"]
+MCPORTER_CONFIG=./mcporter.json npx mcporter@latest generate-cli --server calendly --output calendly
 ```
 
 ## License
