@@ -8,6 +8,7 @@ Clawdbot skill for Calendly integration. List events, check availability, manage
 - **Event Management**: List, view, and cancel scheduled events
 - **Invitee Management**: View event invitees
 - **Organization**: List organization memberships
+- **Scheduling API**: Discover event types, check availability, and schedule meetings programmatically
 
 ## Installation
 
@@ -29,6 +30,8 @@ export CALENDLY_API_KEY="your-pat-token"
 ```
 
 Get your token from: https://calendly.com/integrations/api_webhooks
+
+**Note:** Scheduling API features require a paid Calendly plan (Standard or higher).
 
 ## Usage
 
@@ -56,15 +59,43 @@ Get your token from: https://calendly.com/integrations/api_webhooks
 ./calendly cancel-event --event-uuid "<EVENT_UUID>" --reason "Rescheduling needed"
 ```
 
+### Scheduling Workflow
+
+```bash
+# 1. List your available event types
+./calendly list-event-types
+
+# 2. Check availability for a specific event type
+./calendly get-event-type-availability --event-type "<EVENT_TYPE_URI>"
+
+# 3. Schedule a meeting at an available time (requires paid plan)
+./calendly schedule-event \
+  --event-type "<EVENT_TYPE_URI>" \
+  --start-time "2026-01-25T19:00:00Z" \
+  --invitee-email "client@company.com" \
+  --invitee-name "John Smith" \
+  --invitee-timezone "America/New_York"
+```
+
 ## Available Commands
 
+### Event Management
 - `get-current-user` - Get authenticated user details
 - `list-events` - List scheduled events
 - `get-event` - Get event details
 - `cancel-event` - Cancel an event
 - `list-event-invitees` - List invitees for an event
 - `list-organization-memberships` - List organization memberships
-- OAuth tools (`get-oauth-url`, `exchange-code-for-tokens`, `refresh-access-token`)
+
+### Scheduling API (requires paid plan)
+- `list-event-types` - List available event types for scheduling
+- `get-event-type-availability` - Get available time slots for an event type
+- `schedule-event` - Schedule a meeting programmatically
+
+### OAuth
+- `get-oauth-url` - Generate OAuth authorization URL
+- `exchange-code-for-tokens` - Exchange authorization code for tokens
+- `refresh-access-token` - Refresh access token
 
 ## Integration with Clawdbot
 
@@ -84,6 +115,9 @@ Then use in conversations:
 - "What meetings do I have?"
 - "Cancel my 2pm meeting"
 - "Who's attending my next call?"
+- "What event types do I have available?"
+- "Check my availability for next Tuesday"
+- "Schedule a meeting with john@company.com tomorrow at 2 PM"
 
 ## Development
 
@@ -109,6 +143,12 @@ EOF
 
 # Generate CLI
 MCPORTER_CONFIG=./mcporter.json mcporter generate-cli --server calendly --output calendly
+```
+
+**Note:** If using unreleased features from GitHub, point to the repository:
+```bash
+# Use latest from GitHub (for unreleased v2.0+ features)
+"args": ["github:meAmitPatil/calendly-mcp-server"]
 ```
 
 ## License
