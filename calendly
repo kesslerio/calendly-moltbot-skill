@@ -14,19 +14,19 @@ const embeddedServer = {
       "-y",
       "calendly-mcp-server"
     ],
-    "cwd": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill"
+    "cwd": undefined
   },
   "env": {
     "CALENDLY_API_KEY": "${CALENDLY_API_KEY}"
   },
   "source": {
     "kind": "local",
-    "path": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill/mcporter.json"
+    "path": "./mcporter.json"
   },
   "sources": [
     {
       "kind": "local",
-      "path": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill/mcporter.json"
+      "path": "./mcporter.json"
     }
   ]
 } as const;
@@ -264,7 +264,7 @@ const embeddedMetadata = {
     "name": "calendly",
     "source": {
       "kind": "local",
-      "path": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill/mcporter.json"
+      "path": "./mcporter.json"
     },
     "definition": {
       "name": "calendly",
@@ -276,7 +276,7 @@ const embeddedMetadata = {
           "-y",
           "calendly-mcp-server"
         ],
-        "cwd": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill"
+        "cwd": undefined
       },
       "env": {
         "CALENDLY_API_KEY": "${CALENDLY_API_KEY}"
@@ -289,7 +289,7 @@ const embeddedMetadata = {
   },
   "invocation": {
     "serverRef": "calendly",
-    "configPath": "/tmp/tmp.L7q1D0gNtD/calendly-clawdbot-skill/mcporter.json",
+    "configPath": "./mcporter.json",
     "runtime": "bun",
     "bundler": "bun",
     "outputPath": "calendly",
