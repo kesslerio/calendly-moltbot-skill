@@ -9,6 +9,8 @@ Clawdbot skill for Calendly integration. List events, check availability, manage
 - **Invitee Management**: View event invitees
 - **Organization**: List organization memberships
 
+> **Note:** Scheduling API features (list-event-types, get-event-type-availability, schedule-event) are available in calendly-mcp-server v2.0.0, which is currently unreleased. This skill uses v1.0.0 from npm for portability. See [Upgrade to v2.0](#upgrade-to-v20) for instructions once published.
+
 ## Installation
 
 ```bash
@@ -58,13 +60,18 @@ Get your token from: https://calendly.com/integrations/api_webhooks
 
 ## Available Commands
 
+### Event Management
 - `get-current-user` - Get authenticated user details
 - `list-events` - List scheduled events
 - `get-event` - Get event details
 - `cancel-event` - Cancel an event
 - `list-event-invitees` - List invitees for an event
 - `list-organization-memberships` - List organization memberships
-- OAuth tools (`get-oauth-url`, `exchange-code-for-tokens`, `refresh-access-token`)
+
+### OAuth
+- `get-oauth-url` - Generate OAuth authorization URL
+- `exchange-code-for-tokens` - Exchange authorization code for tokens
+- `refresh-access-token` - Refresh access token
 
 ## Integration with Clawdbot
 
@@ -85,6 +92,25 @@ Then use in conversations:
 - "Cancel my 2pm meeting"
 - "Who's attending my next call?"
 
+## Upgrade to v2.0
+
+Once calendly-mcp-server v2.0.0 is published to npm (adds Scheduling API with event types, availability, and programmatic scheduling), regenerate the CLI:
+
+```bash
+# Update to v2.0+
+MCPORTER_CONFIG=./mcporter.json npx mcporter@latest generate-cli --server calendly --output calendly
+
+# Verify new commands appear
+./calendly --help | grep -E "list-event-types|get-event-type-availability|schedule-event"
+```
+
+The v2.0 Scheduling API will add:
+- `list-event-types` - List available event types for scheduling
+- `get-event-type-availability` - Get available time slots
+- `schedule-event` - Schedule meetings programmatically
+
+**Requires:** Paid Calendly plan (Standard or higher)
+
 ## Development
 
 This skill wraps the [calendly-mcp-server](https://github.com/meAmitPatil/calendly-mcp-server) MCP server via [mcporter](https://github.com/steipete/mcporter).
@@ -92,7 +118,7 @@ This skill wraps the [calendly-mcp-server](https://github.com/meAmitPatil/calend
 To regenerate the CLI (if the upstream MCP server updates):
 
 ```bash
-# Configure mcporter
+# Uses mcporter.json config (not tracked in git)
 cat > mcporter.json <<EOF
 {
   "mcpServers": {
@@ -108,7 +134,7 @@ cat > mcporter.json <<EOF
 EOF
 
 # Generate CLI
-MCPORTER_CONFIG=./mcporter.json mcporter generate-cli --server calendly --output calendly
+MCPORTER_CONFIG=./mcporter.json npx mcporter@latest generate-cli --server calendly --output calendly
 ```
 
 ## License
