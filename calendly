@@ -14,19 +14,19 @@ const embeddedServer = {
       "-y",
       "calendly-mcp-server"
     ],
-    "cwd": undefined
+    "cwd": "/home/art/.moltbot"
   },
   "env": {
     "CALENDLY_API_KEY": "${CALENDLY_API_KEY}"
   },
   "source": {
     "kind": "local",
-    "path": "./mcporter.json"
+    "path": "/home/art/.moltbot/mcporter.json"
   },
   "sources": [
     {
       "kind": "local",
-      "path": "./mcporter.json"
+      "path": "/home/art/.moltbot/mcporter.json"
     }
   ]
 } as const;
@@ -264,7 +264,7 @@ const embeddedMetadata = {
     "name": "calendly",
     "source": {
       "kind": "local",
-      "path": "./mcporter.json"
+      "path": "/home/art/.moltbot/mcporter.json"
     },
     "definition": {
       "name": "calendly",
@@ -276,7 +276,7 @@ const embeddedMetadata = {
           "-y",
           "calendly-mcp-server"
         ],
-        "cwd": undefined
+        "cwd": "/home/art/.moltbot"
       },
       "env": {
         "CALENDLY_API_KEY": "${CALENDLY_API_KEY}"
@@ -289,7 +289,7 @@ const embeddedMetadata = {
   },
   "invocation": {
     "serverRef": "calendly",
-    "configPath": "./mcporter.json",
+    "configPath": "/home/art/.moltbot/mcporter.json",
     "runtime": "bun",
     "bundler": "bun",
     "outputPath": "calendly",
