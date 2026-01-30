@@ -1,6 +1,6 @@
-# Calendly Clawdbot Skill
+# Calendly Moltbot Skill
 
-Clawdbot skill for Calendly integration. List events, check availability, manage meetings via the Calendly API.
+Moltbot skill for Calendly integration. List events, check availability, manage meetings via the Calendly API.
 
 ## Features
 
@@ -15,8 +15,8 @@ Clawdbot skill for Calendly integration. List events, check availability, manage
 
 ```bash
 # Clone the repo
-git clone https://github.com/kesslerio/calendly-clawdbot-skill.git
-cd calendly-clawdbot-skill
+git clone https://github.com/kesslerio/calendly-moltbot-skill.git
+cd calendly-moltbot-skill
 
 # The CLI is self-contained (generated via mcporter from MCP server)
 chmod +x calendly
@@ -73,18 +73,23 @@ Get your token from: https://calendly.com/integrations/api_webhooks
 - `exchange-code-for-tokens` - Exchange authorization code for tokens
 - `refresh-access-token` - Refresh access token
 
-## Integration with Clawdbot
+## Integration with Moltbot
 
-Add to your Clawdbot skills directory:
-
-```bash
-ln -s $(pwd) ~/.clawdbot/skills/calendly
-```
-
-Or for the main agent workspace:
+Add to your Moltbot skills configuration:
 
 ```bash
-ln -s $(pwd) ~/clawd/skills/calendly
+# Copy or symlink to your Moltbot skills directory
+ln -s $(pwd) /path/to/your/moltbot/skills/calendly
+
+# Or add to your moltbot.json config:
+{
+  "skills": [
+    {
+      "name": "calendly",
+      "path": "/path/to/calendly-moltbot-skill"
+    }
+  ]
+}
 ```
 
 Then use in conversations:
@@ -145,4 +150,4 @@ MIT
 
 - MCP Server: [meAmitPatil/calendly-mcp-server](https://github.com/meAmitPatil/calendly-mcp-server)
 - CLI Generator: [mcporter](https://github.com/steipete/mcporter)
-- Clawdbot: [docs.clawd.bot](https://docs.clawd.bot)
+- Moltbot: [moltbot.io](https://moltbot.io)

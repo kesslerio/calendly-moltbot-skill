@@ -15,8 +15,8 @@ Interact with Calendly scheduling via MCP-generated CLI.
 # Get your Calendly profile (returns user URI)
 calendly get-current-user
 
-# List your scheduled events
-calendly list-events --user-uri "<YOUR_USER_URI>"
+# List RECENT events (always use --min-start-time for recent queries!)
+calendly list-events --user-uri "<YOUR_USER_URI>" --min-start-time "2026-01-20T00:00:00Z"
 
 # Get event details
 calendly get-event --event-uuid <UUID>
@@ -43,19 +43,22 @@ calendly cancel-event --event-uuid <UUID> --reason "Rescheduling needed"
 
 ## Configuration
 
-API key is stored in `~/.clawdbot/.env`:
-```
-CALENDLY_API_KEY="<your-pat-token>"
+API key can be stored in your environment or `.env` file:
+```bash
+export CALENDLY_API_KEY="<your-pat-token>"
+# Or in ~/.moltbot/.env or ~/.clawdbot/.env
 ```
 
 Get your Personal Access Token from: https://calendly.com/integrations/api_webhooks
 
-## Usage in Clawdbot
+## Usage in Moltbot
 
 When user asks about:
-- "What meetings do I have?" → `list-events`
-- "Cancel my 2pm meeting" → Find with `list-events`, then `cancel-event`
+- "What meetings do I have?" → `list-events` with `--min-start-time` (use recent date!)
+- "Cancel my 2pm meeting" → Find with `list-events` (time-filtered), then `cancel-event`
 - "Who's attending X meeting?" → `list-event-invitees`
+
+**Note:** First time, run `calendly get-current-user` to obtain your User URI.
 
 ## Getting Your User URI
 
@@ -119,11 +122,29 @@ cd ~/clawd/skills/calendly
 MCPORTER_CONFIG=./mcporter.json npx mcporter@latest generate-cli --server calendly --output calendly
 ```
 
+## Important: Time Filtering
+
+**Always use `--min-start-time` when querying recent events!**
+
+The API returns events oldest-first by default and doesn't support pagination via CLI. Without a time filter, you'll get events from years ago.
+
+```bash
+# Last 7 days
+calendly list-events --user-uri "<URI>" --min-start-time "$(date -u -d '7 days ago' +%Y-%m-%dT00:00:00Z)"
+
+# This week
+calendly list-events --user-uri "<URI>" --min-start-time "2026-01-20T00:00:00Z" --max-start-time "2026-01-27T23:59:59Z"
+
+# Future events only
+calendly list-events --user-uri "<URI>" --min-start-time "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+```
+
 ## Notes
 
 - All times in API responses are UTC (convert to Pacific for display)
 - Event UUIDs are found in `list-events` output
 - OAuth tools available but not needed with Personal Access Token
+- No pagination support in CLI - use time filters instead
 
 ---
 
