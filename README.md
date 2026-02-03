@@ -76,7 +76,6 @@ This command fetches events **and** invitee details in a single API call using C
 - `list-event-invitees` - List invitees for a specific event
 - `list-organization-memberships` - List organization memberships
 
-
 ### OAuth
 - `get-oauth-url` - Generate OAuth authorization URL
 - `exchange-code-for-tokens` - Exchange authorization code for tokens

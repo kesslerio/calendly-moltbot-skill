@@ -496,7 +496,7 @@ program
 	.option("--status <status:active|canceled>", "Filter events by status (choices: active, canceled; example: active)")
 	.option("--max-start-time <max-start-time:iso-8601>", "Maximum start time for events (ISO 8601 format)")
 	.option("--min-start-time <min-start-time:iso-8601>", "Minimum start time for events (ISO 8601 format)")
-	.option("--count <count:number>", "Number of events to return (default 20, max 100) (example: 1)", (value) => parseFloat(value))
+	.option("--count <count:number>", "Number of events to return (default 20, max 100) (example: 1)", (value) => parseInt(value, 10))
 	
 	.action(async (cmdOpts) => {
 		const globalOptions = program.opts();
@@ -537,6 +537,7 @@ program
 						'Authorization': `Bearer ${apiKey}`,
 						'Content-Type': 'application/json',
 					},
+					timeout: 30000,
 				}
 			);
 			
